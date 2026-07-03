@@ -1,0 +1,44 @@
+import { Schema, model } from "mongoose";
+
+const storySchema = new Schema(
+    {
+        img: {
+            type: String,
+            required: true,
+        },
+        title: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        article: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        category: {
+            type: Schema.Types.ObjectId,
+            ref: "Category",
+            required: true,
+        },
+        rate: {
+            type: Number,
+            default: 0,
+            
+        },
+        ownerId: {
+            type: Schema.Types.ObjectId,
+            ref: "Users",
+            required: true,
+        },
+        date: {
+            type: String,
+            required: true,
+        }
+    },
+     {
+    versionKey: false,
+  }
+);
+
+export const Story = model("Story", storySchema);
