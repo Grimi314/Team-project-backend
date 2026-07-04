@@ -3,6 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import pino from "pino-http";
 import "dotenv/config";
+import storyRouter from "./routes/storyRoutes.js";
+import { errors } from "celebrate";
 
 import { connectMongoDB } from "./db/connectMongoDB.js";
 
@@ -18,7 +20,8 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 app.use(pino());
-
+app.use(storyRouter);
+app.use(errors);
 const PORT = process.env.PORT || 3000;
 
 await connectMongoDB();
