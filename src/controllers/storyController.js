@@ -7,13 +7,13 @@ export const createStoryController = async (req, res, next) => {
     try {
         const { title, article, category } = req.body;
         if (!req.file) {
-            throw createHttpError(400, "Image is required");
+            throw createHttpError(400, "Зображення є обов'язковим.");
         }
         const cloudinaryResult = await saveFileToCloudinary(req.file.buffer);
         const img = cloudinaryResult.secure_url;
         const ownerId = req.user?._id;
         if (!ownerId) {
-            throw createHttpError(401, "User not authorized");
+            throw createHttpError(401, "Користувач не авторизований.");
         }
         const date = new Date().toISOString().split("T")[0];
     
@@ -28,16 +28,10 @@ export const createStoryController = async (req, res, next) => {
         
         res.status(201).json({
             status: 201,
-            message: "Story created successfully",
+            message: "Історію успішно створено.",
             data: story,
         });
     } catch (error) {
-        console.error("CREATE STORY ERROR:", error);
-
-        res.status(500).json({
-            message: error.message,
-            name: error.name,
-            error,
-        });
-    }
+    next(error);
+}
 };

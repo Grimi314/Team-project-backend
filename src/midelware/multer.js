@@ -10,7 +10,7 @@ export const upload = multer({
         if (allowedTypes.includes(file.mimetype)) {
             cb(null, true)
         } else {
-            cb(new Error('Invalid file type. Only JPEG, JPG, PNG are allowed'), false)
+            cb(new Error('Будь ласка, завантажте зображення у форматі JPEG, JPG, PNG або WEBP.'), false)
         }
     },
 });

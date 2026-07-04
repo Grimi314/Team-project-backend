@@ -10,7 +10,7 @@ cloudinary.config({
 export async function saveFileToCloudinary(buffer) {
   const options = {
      folder: "stories",
-    resource_type: 'image',
+    resource_type: "image",
     transformation: [
       { width: 1200, crop: 'limit' },
       { fetch_format: 'auto', quality: 'auto' },
