@@ -4,10 +4,10 @@ import cookieParser from "cookie-parser";
 import pino from "pino-http";
 import "dotenv/config";
 
+import { connectMongoDB } from "./db/connectMongoDB.js";
+
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import { errorHandler } from "./middleware/errorHandler.js";
-
-import { connectMongoDB } from "./db/connectMongoDB.js";
 
 const app = express();
 
