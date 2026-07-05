@@ -30,7 +30,9 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.3",
     "nanoid": "^5.1.16",
-    "pino-http": "^11.0.0"
+    "pino-http": "^11.0.0",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "eslint": "^10.6.0",
