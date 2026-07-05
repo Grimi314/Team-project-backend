@@ -1,4 +1,4 @@
-import { Story } from "../validations/storyValidation.js";
+import { Story } from "../models/story.js";
 import createHttpError from "http-errors";
 
 export const getStoryById = async (req, res) => {
