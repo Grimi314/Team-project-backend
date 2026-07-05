@@ -1,13 +1,12 @@
-import { objectIdValidator } from "../validations/storyValidation.js";
 import { Router } from "express";
 import { celebrate } from "celebrate";
-import { getStoryById } from "../controllers/storyController.js";
+
+import { getArticles, getStoryById } from "../controllers/storyController.js";
+import { getArticlesSchema } from "../validations/storyValidation.js";
 
 const storyRouter = Router();
 
-storyRouter.get(
-  "/stories/:stortId",
-  celebrate(objectIdValidator),
-  getStoryById,
-);
+storyRouter.get("/api/articles", celebrate(getArticlesSchema), getArticles);
+storyRouter.get("/stories/:storyId", getStoryById);
+
 export default storyRouter;

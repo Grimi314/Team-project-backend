@@ -24,12 +24,7 @@ const storySchema = new Schema(
     },
     category: {
       type: Schema.Types.ObjectId,
-      required: true,
-      index: true,
-    },
-    ownerId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Category",
       required: true,
       index: true,
     },
@@ -39,12 +34,19 @@ const storySchema = new Schema(
       min: 0,
       index: true,
     },
+    ownerId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
     date: {
       type: String,
       required: true,
     },
   },
   {
+    timestamps: true,
     versionKey: false,
   },
 );
