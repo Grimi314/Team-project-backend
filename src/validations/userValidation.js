@@ -27,6 +27,7 @@ export const userIdParamSchema = {
 export const getUserArticlesSchema = {
   [Segments.PARAMS]: Joi.object({
     userId: Joi.string().hex().length(24).required(),
+    articleId: Joi.string().custom(objectIdValidator).required(),
   }),
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1),

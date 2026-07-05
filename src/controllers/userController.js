@@ -13,10 +13,6 @@ export const getUserById = async (req, res) => {
     throw createHttpError(404, "Такий користувач відсутній");
   }
 
-  // const stories = await Story.find({ ownerId: userId })
-  //   .select("img title ownerId")
-  //   .populate("ownerId", "name savedArticles");
-
   const [totalItems, articles] = await Promise.all([
     Story.countDocuments({ ownerId: userId }),
     Story.find({ ownerId: userId })
