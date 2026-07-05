@@ -1,12 +1,22 @@
 import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import pino from "pino-http";
 import "dotenv/config";
-
-import { errors } from "celebrate";
-import storyRouter from "./routes/storyRoutes.js";
+import cors from "cors";
 import { connectMongoDB } from "./db/connectMongoDB.js";
+import { logger } from "./middleware/logger.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import pino from "pino-http";
+
+import userRoutes from "./routes/userRoutes.js";
+import storyRouter from "./routes/storyRoutes.js";
+import cookieParser from "cookie-parser";
+
+import authRouter from "./routes/authRoutes.js";
+
+const app = express();
+
+app.use(logger);
+app.use(express.json());
+
 
 
 
@@ -23,14 +33,15 @@ app.use(
     credentials: true,
   }),
 );
+app.use(userRoutes);
 
 app.use(cookieParser());
 app.use(pino());
 app.use(storyRouter);
 
-app.use(errors);
 
-app.use('/api/auth', authRouter);
+app.use(errorHandler);
+app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 3000;
 
