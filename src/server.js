@@ -5,9 +5,8 @@ import express from 'express';
 import pino from 'pino-http';
 
 import { connectMongoDB } from "./db/connectMongoDB.js";
-import  storiesRouter from "./routes/storyRoutes.js"
-import { connectMongoDB } from './db/connectMongoDB.js';
 import authRouter from './routes/authRoutes.js';
+import storiesRouter from "./routes/storyRoutes.js";
 
 const app = express();
 
