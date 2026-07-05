@@ -1,14 +1,22 @@
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import 'dotenv/config';
-import express from 'express';
-import pino from 'pino-http';
-
+import express from "express";
+import "dotenv/config";
+import cors from "cors";
 import { connectMongoDB } from "./db/connectMongoDB.js";
-import authRouter from './routes/authRoutes.js';
-import storiesRouter from "./routes/storyRoutes.js";
+import { logger } from "./middleware/logger.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import pino from "pino-http";
+
+import userRoutes from "./routes/userRoutes.js";
+import storyRouter from "./routes/storyRoutes.js";
+import cookieParser from "cookie-parser";
+
+import authRouter from "./routes/authRoutes.js";
+
 
 const app = express();
+
+app.use(logger);
+app.use(express.json());
 
 app.use(
   cors({
@@ -16,18 +24,20 @@ app.use(
     credentials: true,
   }),
 );
+app.use(userRoutes);
 
-app.use(express.json());
 app.use(cookieParser());
 app.use(pino());
+app.use(storyRouter);
 
-app.use("/api/stories", storiesRouter);
-app.use('/api/auth', authRouter);
+
+app.use("/api/auth", authRouter);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
 await connectMongoDB();
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`сервер запущена на порті ${PORT}`);
 });

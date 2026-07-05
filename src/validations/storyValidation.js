@@ -1,4 +1,4 @@
-import { Joi } from "celebrate";
+import { Joi, Segments } from "celebrate";
 import { isValidObjectId } from "mongoose";
 
 const objectIdValidation = (value, helpers) => {
@@ -6,6 +6,13 @@ const objectIdValidation = (value, helpers) => {
         return helpers.message("Некоректна категорія.");
     }
     return value;
+};
+
+export const getArticlesSchema = {
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer().min(1).default(1),
+    perPage: Joi.number().integer().max(6).default(6),
+  }),
 };
 
 export const createStorySchema = Joi.object({
