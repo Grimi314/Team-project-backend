@@ -3,7 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import { connectMongoDB } from "./db/connectMongoDB.js";
 import { logger } from "./middleware/logger.js";
-import { errorHandler } from "./middleware/errorHandler.js";
+
 import pino from "pino-http";
 
 import userRoutes from "./routes/userRoutes.js";
@@ -40,7 +40,6 @@ app.use(pino());
 app.use(storyRouter);
 
 
-app.use(errorHandler);
 app.use("/api/auth", authRouter);
 
 const PORT = process.env.PORT || 3000;
