@@ -3,9 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import pino from "pino-http";
 import "dotenv/config";
-import storyRouter from "./routes/storyRoutes.js";
-import { errors } from "celebrate";
 
+import { errors } from "celebrate";
+import storyRouter from "./routes/storyRoutes.js";
 import { connectMongoDB } from "./db/connectMongoDB.js";
 
 const app = express();
