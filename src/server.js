@@ -1,34 +1,22 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
-import { connectMongoDB } from "./db/connectMongoDB.js";
-import { logger } from "./middleware/logger.js";
-import { errorHandler } from "./middleware/errorHandler.js";
+import cookieParser from "cookie-parser";
 import pino from "pino-http";
 
-import userRoutes from "./routes/userRoutes.js";
-import storyRouter from "./routes/storyRoutes.js";
-import cookieParser from "cookie-parser";
-
 import { connectMongoDB } from "./db/connectMongoDB.js";
 import { logger } from "./middleware/logger.js";
-import authRouter from "./routes/authRoutes.js";
-import recommendedStoriesRouter from "./routes/recommendedStoriesRoutes.js";
-import storyRouter from "./routes/storyRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
-
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
+
+import authRouter from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import storyRouter from "./routes/storyRoutes.js";
+import recommendedStoriesRouter from "./routes/recommendedStoriesRoutes.js";
 
 const app = express();
 
 app.use(logger);
-app.use(express.json());
-
-import authRouter from "./routes/authRoutes.js";
-
-const app = express();
-
 app.use(express.json());
 
 app.use(
@@ -37,12 +25,14 @@ app.use(
     credentials: true,
   }),
 );
+
 app.use(cookieParser());
 app.use(pino());
-app.use(storyRouter);
 
-app.use(errorHandler);
 app.use("/api/auth", authRouter);
+app.use(userRoutes);
+app.use(storyRouter);
+app.use(recommendedStoriesRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
