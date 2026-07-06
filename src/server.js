@@ -12,19 +12,15 @@ import cookieParser from "cookie-parser";
 
 import authRouter from "./routes/authRoutes.js";
 
-import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import { notFoundHandler } from "./middleware/notFoundHandler.js";
 
 const app = express();
 
 app.use(logger);
 app.use(express.json());
 
-
-
-
-
-import authRouter from './routes/authRoutes.js';
+import authRouter from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -41,7 +37,6 @@ app.use(userRoutes);
 app.use(cookieParser());
 app.use(pino());
 app.use(storyRouter);
-
 
 app.use(errorHandler);
 app.use("/api/auth", authRouter);
