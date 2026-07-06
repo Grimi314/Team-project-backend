@@ -10,7 +10,12 @@ import userRoutes from "./routes/userRoutes.js";
 import storyRouter from "./routes/storyRoutes.js";
 import cookieParser from "cookie-parser";
 
+import { connectMongoDB } from "./db/connectMongoDB.js";
+import { logger } from "./middleware/logger.js";
 import authRouter from "./routes/authRoutes.js";
+import recommendedStoriesRouter from "./routes/recommendedStoriesRoutes.js";
+import storyRouter from "./routes/storyRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 import { errorHandler } from "./middleware/errorHandler.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
@@ -32,8 +37,6 @@ app.use(
     credentials: true,
   }),
 );
-app.use(userRoutes);
-
 app.use(cookieParser());
 app.use(pino());
 app.use(storyRouter);
