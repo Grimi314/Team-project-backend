@@ -34,3 +34,10 @@ export const getUserArticlesSchema = {
     perPage: Joi.number().integer().min(1).max(6).default(6),
   }),
 };
+
+export const getSavedStoriesSchema = {
+  [Segments.QUERY]: Joi.object({
+    page: Joi.number().integer().min(1).default(1),
+    perPage: Joi.number().integer().min(1).max(6).default(6),
+  }),
+};

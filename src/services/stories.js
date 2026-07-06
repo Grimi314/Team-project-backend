@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 import createHttpError from "http-errors";
 
@@ -41,6 +42,10 @@ const buildPagination = ({ page, perPage, totalItems }) => {
     hasPreviousPage: page > 1,
     hasNextPage: page < totalPages,
   };
+};
+
+export const createStory = async (payload) => {
+  return await Story.create(payload);
 };
 
 export const getRecommendedStories = async (query) => {
@@ -100,3 +105,4 @@ export const getRecommendedStories = async (query) => {
     ...buildPagination({ page, perPage, totalItems }),
   };
 };
+

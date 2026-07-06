@@ -1,10 +1,14 @@
 import { Router } from "express";
 import { celebrate } from "celebrate";
-import { getUserById } from "../controllers/userController.js";
-import { getStoriesByUserId } from "../controllers/storyController.js";
+
+import { authenticate } from "../middleware/authenticate.js";
+
+import { getUserById, getSavedStories } from "../controllers/userController.js";
+
 import {
   userIdParamSchema,
   getUserArticlesSchema,
+  getSavedStoriesSchema,
 } from "../validations/userValidation.js";
 
 const router = Router();
@@ -15,10 +19,12 @@ router.get(
   getUserById,
 );
 
+// Отримати збережені історії поточного користувача
 router.get(
-  "/api/users/:userId/stories",
-  celebrate(userIdParamSchema),
-  getStoriesByUserId,
+  "/api/users/saved",
+  authenticate,
+  celebrate(getSavedStoriesSchema),
+  getSavedStories,
 );
 
 export default router;
