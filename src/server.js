@@ -14,7 +14,6 @@ import userRoutes from "./routes/userRoutes.js";
 import storyRouter from "./routes/storyRoutes.js";
 import recommendedStoriesRouter from "./routes/recommendedStoriesRoutes.js";
 
-
 const app = express();
 
 app.use(logger);
