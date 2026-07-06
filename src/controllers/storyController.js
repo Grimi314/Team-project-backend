@@ -59,7 +59,7 @@ export const getArticles = async (req, res) => {
 export const getStoryById = async (req, res) => {
   const { storyId } = req.params;
 
-  const story = Story.findById(storyId);
+  const story = await Story.findById(storyId);
   if (!story) {
     throw createHttpError(404, "сторінку не знайдено ");
   }
