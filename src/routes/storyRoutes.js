@@ -1,9 +1,9 @@
 import { celebrate } from "celebrate";
-import { getArticlesSchema } from "../validations/storyValidation";
-import { objectIdValidator } from "../validations/storyValidation.js";
+import { getArticlesSchema, storyIdParamSchema, objectIdValidator } from "../validations/storyValidation";
 import { Router } from "express";
 import { celebrate } from "celebrate";
-import { getStoryById } from "../controllers/storyController.js";
+import { getStoryById, addSavedStory, removeSavedStory } from "../controllers/storyController.js";
+import { authenticate } from "../middleware/authenticate.js"; 
 
 const storyRouter = Router();
 
@@ -14,4 +14,19 @@ storyRouter.get(
   celebrate(objectIdValidator),
   getStoryById,
 );
+
+storyRouter.post(
+  "/api/stories/:storyId/saved",
+  authenticate,
+  celebrate(storyIdParamSchema),
+  addSavedStory
+);
+
+storyRouter.delete(
+  "/api/stories/:storyId/saved",
+  authenticate,
+  celebrate(storyIdParamSchema),
+  removeSavedStory 
+);
+
 export default storyRouter;
