@@ -37,4 +37,4 @@ const storySchema = new Schema(
   },
   { timestamps: true },
 );
-export const Story = model("Story", storySchema, "articles");
+export const Story = model("Story", storySchema, "stories");

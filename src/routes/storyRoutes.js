@@ -1,5 +1,6 @@
 import { celebrate } from "celebrate";
-import { getArticlesSchema, storyIdParamSchema, objectIdValidator } from "../validations/storyValidation";
+import { getArticlesSchema, storyIdParamSchema } from "../validations/storyValidation";
+import { objectIdValidator } from "../validations/userValidation.js"
 import { Router } from "express";
 import { celebrate } from "celebrate";
 import { getStoryById, addSavedStory, removeSavedStory } from "../controllers/storyController.js";

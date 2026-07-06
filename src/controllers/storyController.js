@@ -40,7 +40,7 @@ export const addSavedStory = async (req, res) => {
     throw createHttpError(404, "Статтю не знайдено");
   }
 
-  const updatedUser = await userService.addStoryToSaved(userId, storyId);
+  const updatedUser = await addStoryToSaved(userId, storyId);
 
   res.status(200).json({
     status: 200,
@@ -54,13 +54,12 @@ export const addSavedStory = async (req, res) => {
 export const removeSavedStory = async (req, res) => {
   const { storyId } = req.params;
   const userId = req.user._id;
-
   const storyExists = await Story.findById(storyId);
   if (!storyExists) {
     throw createHttpError(404, "Статтю не знайдено");
   }
 
-  const updatedUser = await userService.removeStoryFromSaved(userId, storyId);
+  const updatedUser = await removeStoryFromSaved(userId, storyId);
 
   res.status(200).json({
     status: 200,
