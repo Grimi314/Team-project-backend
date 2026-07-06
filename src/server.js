@@ -29,9 +29,10 @@ app.use(cookieParser());
 app.use(pino());
 
 app.use("/api/auth", authRouter);
-app.use(storyRouter);
 app.use(userRoutes);
+app.use(storyRouter);
 app.use(recommendedStoriesRouter);
+
 
 
 app.use(notFoundHandler);
