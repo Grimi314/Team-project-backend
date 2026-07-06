@@ -17,16 +17,6 @@ const app = express();
 app.use(logger);
 app.use(express.json());
 
-
-
-
-
-import authRouter from './routes/authRoutes.js';
-
-const app = express();
-
-app.use(express.json());
-
 app.use(
   cors({
     origin: true,
@@ -34,7 +24,6 @@ app.use(
   }),
 );
 app.use(userRoutes);
-
 app.use(cookieParser());
 app.use(pino());
 app.use(storyRouter);
