@@ -3,7 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import { connectMongoDB } from "./db/connectMongoDB.js";
 import { logger } from "./middleware/logger.js";
-
+import { errorHandler } from "./middleware/errorHandler.js";
 import pino from "pino-http";
 
 import userRoutes from "./routes/userRoutes.js";
@@ -12,16 +12,15 @@ import cookieParser from "cookie-parser";
 
 import authRouter from "./routes/authRoutes.js";
 
+import { errorHandler } from "./middleware/errorHandler.js";
+import { notFoundHandler } from "./middleware/notFoundHandler.js";
+
 const app = express();
 
 app.use(logger);
 app.use(express.json());
 
-
-
-
-
-import authRouter from './routes/authRoutes.js';
+import authRouter from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -39,8 +38,11 @@ app.use(cookieParser());
 app.use(pino());
 app.use(storyRouter);
 
-
+app.use(errorHandler);
 app.use("/api/auth", authRouter);
+
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
