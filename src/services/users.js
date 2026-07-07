@@ -1,3 +1,5 @@
+import { User } from "../models/user.js";
+
 export const addStoryToSaved = async (userId, storyId) => {
   return await User.findByIdAndUpdate(
     userId,
