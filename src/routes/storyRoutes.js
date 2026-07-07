@@ -26,11 +26,13 @@ storyRouter.post("/api/stories",
     createStoryController
 );
 storyRouter.post(
+   authenticate,
   "/api/stories/:storyId/saved",
   celebrate(storyIdParamSchema),
   addSavedStory
 );
 storyRouter.delete(
+    authenticate,
   "/api/stories/:storyId/saved",
   celebrate(storyIdParamSchema),
   removeSavedStory 
