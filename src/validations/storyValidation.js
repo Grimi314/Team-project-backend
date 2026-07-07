@@ -1,7 +1,8 @@
 import { Joi, Segments } from "celebrate";
 import { isValidObjectId } from "mongoose";
+import { objectIdValidation } from "./userValidation";
 
-const objectIdValidation = (value, helpers) => {
+export const objectIdValidation = (value, helpers) => {
     if (!isValidObjectId(value)) {
         return helpers.message("Некоректна категорія.");
     }
@@ -33,3 +34,9 @@ export const createStorySchema = Joi.object({
       "any.required": "Категорія є обов'язковою.",
     }),
 });
+
+export const storyIdParamSchema = {
+  [Segments.PARAMS]: Joi.object({
+    storyId: Joi.string().custom(objectIdValidator).required(),
+  }),
+};

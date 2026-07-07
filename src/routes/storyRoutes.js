@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { celebrate, Segments } from "celebrate";
 
-import { getArticlesSchema } from "../validations/storyValidation.js";
+import { getArticlesSchema, storyIdParamSchema } from "../validations/storyValidation.js";
 import { createStorySchema } from "../validations/storyValidation.js";
 
 import { getArticles } from "../controllers/storyController.js";
 import { getStoryById } from "../controllers/storyController.js";
 import { createStoryController } from "../controllers/storyController.js";
+import { addSavedStory, removeSavedStory } from "../controllers/storyController.js"
 
 import { upload } from "../middleware/multer.js";
 import { authenticate } from "../middleware/authenticate.js";
@@ -23,6 +24,16 @@ storyRouter.post("/api/stories",
         [Segments.BODY]: createStorySchema,
     }),
     createStoryController
+);
+storyRouter.post(
+  "/api/stories/:storyId/saved",
+  celebrate(storyIdParamSchema),
+  addSavedStory
+);
+storyRouter.delete(
+  "/api/stories/:storyId/saved",
+  celebrate(storyIdParamSchema),
+  removeSavedStory 
 );
 
 export default storyRouter;

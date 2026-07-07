@@ -51,4 +51,4 @@ const storySchema = new Schema(
   },
 );
 
-export const Story = models.Story || model("Story", storySchema, "articles");
+export const Story = models.Story || model("Story", storySchema, "stories");
