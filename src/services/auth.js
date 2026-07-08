@@ -15,7 +15,6 @@ export const createSession = async (userId) => {
   });
 };
 
-
 export const setSessionCookies = (res, session) => {
   res.cookie('accessToken', session.accessToken, {
     httpOnly: true,
@@ -31,7 +30,7 @@ export const setSessionCookies = (res, session) => {
     maxAge: ONE_DAY,
   });
 
-    res.cookie('sesionId', session._id, {
+  res.cookie('sessionId', session._id, {
     httpOnly: true,
     secure: true,
     sameSite: 'none',

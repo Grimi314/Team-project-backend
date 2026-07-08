@@ -1,12 +1,11 @@
-import createHttpError from "http-errors";
+import createHttpError from 'http-errors';
 
-import { Category } from "../models/category.js";
-import { Story } from "../models/story.js";
-import { createStory } from "../services/stories.js";
-import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { Story } from '../models/story.js';
+import { createStory } from '../services/stories.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { addStoryToSaved, removeStoryFromSaved } from '../services/users.js';
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const createStoryController = async (req, res, next) => {
   try {
@@ -18,9 +17,9 @@ export const createStoryController = async (req, res, next) => {
     const img = cloudinaryResult.secure_url;
     const ownerId = req.user?._id;
     if (!ownerId) {
-      throw createHttpError(401, "Користувач не авторизований.");
+      throw createHttpError(401, 'Користувач не авторизований.');
     }
-    const date = new Date().toISOString().split("T")[0];
+    const date = new Date().toISOString().split('T')[0];
 
     const story = await createStory({
       img,
@@ -33,7 +32,7 @@ export const createStoryController = async (req, res, next) => {
 
     res.status(201).json({
       status: 201,
-      message: "Історію успішно створено.",
+      message: 'Історію успішно створено.',
       data: story,
     });
   } catch (error) {
@@ -65,7 +64,7 @@ export const getStoryById = async (req, res) => {
 
   const story = await Story.findById(storyId);
   if (!story) {
-    throw createHttpError(404, "сторінку не знайдено ");
+    throw createHttpError(404, 'сторінку не знайдено ');
   }
 
   res.status(200).json({ story });
@@ -76,7 +75,7 @@ export const getStoriesByUserId = async (req, res) => {
   const { page = 1, perPage = 6 } = req.query;
 
   if (!userId) {
-    throw createHttpError(400, "User id is required");
+    throw createHttpError(400, 'User id is required');
   }
 
   const skip = (Number(page) - 1) * Number(perPage);
@@ -89,7 +88,7 @@ export const getStoriesByUserId = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(Number(perPage))
-      .populate("ownerId", "name avatarUrl"),
+      .populate('ownerId', 'name avatarUrl'),
   ]);
 
   const totalPages = Math.ceil(totalItems / Number(perPage));
@@ -108,14 +107,14 @@ export const addSavedStory = async (req, res) => {
   const userId = req.user._id;
   const storyExists = await Story.findById(storyId);
   if (!storyExists) {
-    throw createHttpError(404, "Статтю не знайдено");
+    throw createHttpError(404, 'Статтю не знайдено');
   }
 
   const updatedUser = await addStoryToSaved(userId, storyId);
 
   res.status(200).json({
     status: 200,
-    message: "Статтю успішно додано до збережених",
+    message: 'Статтю успішно додано до збережених',
     data: {
       savedArticles: updatedUser.savedArticles,
     },
@@ -127,18 +126,19 @@ export const removeSavedStory = async (req, res) => {
   const userId = req.user._id;
   const storyExists = await Story.findById(storyId);
   if (!storyExists) {
-    throw createHttpError(404, "Статтю не знайдено");
+    throw createHttpError(404, 'Статтю не знайдено');
   }
 
   const updatedUser = await removeStoryFromSaved(userId, storyId);
 
   res.status(200).json({
     status: 200,
-    message: "Статтю успішно видалено зі збережених",
+    message: 'Статтю успішно видалено зі збережених',
     data: {
       savedArticles: updatedUser.savedArticles,
     },
   });
+};
 export const getAllStories = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const perPage = Number(req.query.perPage) || 6;
@@ -149,7 +149,7 @@ export const getAllStories = async (req, res) => {
 
   if (category) {
     if (!mongoose.Types.ObjectId.isValid(category)) {
-      return res.status(400).json({ message: "Неправильні дані в категорії" });
+      return res.status(400).json({ message: 'Неправильні дані в категорії' });
     }
     filter.category = new mongoose.Types.ObjectId(category);
   }
@@ -160,8 +160,8 @@ export const getAllStories = async (req, res) => {
     baseQuery
       .clone()
       .sort({ rate: -1 })
-      .populate("ownerId", "name avatarUrl")
-      .populate("category", "category")
+      .populate('ownerId', 'name avatarUrl')
+      .populate('category', 'category')
       .skip(skip)
       .limit(perPage),
     baseQuery.clone().countDocuments(),
@@ -188,8 +188,8 @@ export const getPopularStories = async (req, res) => {
   )
     .sort({ rate: -1 })
     .limit(10)
-    .populate("ownerId", "name avatarUrl")
-    .populate("category", "category");
+    .populate('ownerId', 'name avatarUrl')
+    .populate('category', 'category');
 
   if (!popularStories || popularStories.length === 0) {
     return res.status(200).json([]);

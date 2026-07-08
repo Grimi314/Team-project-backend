@@ -1,5 +1,3 @@
-import { Session } from '../models/session.js';
-
 // TODO (п.1 ТЗ, реєстрація/логін): registerUser, loginUser
 // TODO (п.2 ТЗ, сесії): refreshUserSession
 
@@ -74,29 +72,15 @@ export const loginUser = async (req, res) => {
   res.status(200).json(user);
 };
 
-export const logoutUser = async (req, res) => {
-  const { sessionId } = req.cookies;
-
-  if (sessionId) {
-    await Session.deleteOne({ _id: sessionId });
-  }
-
-  res.clearCookie('sessionId');
-  res.clearCookie('accessToken');
-  res.clearCookie('refreshToken');
-
-  res.status(204).send();
-};
-
 export const refreshUserSession = async (req, res) => {
-  const { sesionId, refreshToken } = req.cookies;
+  const { sessionId, refreshToken } = req.cookies;
 
-  if (!sesionId || !refreshToken) {
+  if (!sessionId || !refreshToken) {
     throw createHttpError(401, 'Missing session credentioals');
   }
 
   const session = await Session.findOne({
-    _id: sesionId,
+    _id: sessionId,
     refreshToken,
   });
 
@@ -115,6 +99,9 @@ export const refreshUserSession = async (req, res) => {
   }
 
   await session.deleteOne();
+
+  const newSession = await createSession(session.userId);
+  setSessionCookies(res, newSession);
 
   res.status(200).json({
     message: 'Session refreshed',
