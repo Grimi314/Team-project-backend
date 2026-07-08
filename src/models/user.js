@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema(
@@ -12,6 +14,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      trim: true,
       sparse: true,
       trim: true,
       lowercase: true,
@@ -21,32 +24,25 @@ const userSchema = new Schema(
       type: String,
       required: true,
       minlength: 8,
-      maxlength: 128,
     },
-    avatarUrl: {
+    avatar: {
       type: String,
-      default: '',
+      default: null,
     },
-    articlesAmount: {
-      type: Number,
-      default: 0,
-    },
-    savedArticles: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Article',
-      },
-    ],
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true },
 );
 
 userSchema.methods.toJSON = function () {
-  const user = this.toObject();
-  delete user.password;
-  return user;
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+};
+
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
 };
 
 export const User = model('User', userSchema);
