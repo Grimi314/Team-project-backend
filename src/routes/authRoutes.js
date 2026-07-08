@@ -1,9 +1,17 @@
-import { Router } from 'express';
+import { Router } from "express";
+import { celebrate } from "celebrate";
+import { registerUserSchema, loginUserSchema } from "../validations/authValidation.js";
+import { registerUser, loginUser, logoutUser, refreshUserSession } from "../controllers/authController.js";
+import { authenticate } from "../middleware/authenticate.js";
+import { getCurrentUserController } from "../controllers/authController.js";
 
-import { refreshUserSession } from '../controllers/authController.js';
 
 const router = Router();
 
-router.post('/refresh', refreshUserSession);
+router.post('/auth/register', celebrate(registerUserSchema), registerUser);
+router.post('/auth/login', celebrate(loginUserSchema), loginUser);
+router.post('/auth/logout', logoutUser);
+router.post('/auth/refresh', refreshUserSession);
+router.get('/users/me', authenticate, getCurrentUserController);
 
 export default router;
