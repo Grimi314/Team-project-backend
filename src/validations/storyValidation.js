@@ -1,5 +1,6 @@
 import { Joi, Segments } from "celebrate";
 import { isValidObjectId } from "mongoose";
+import { objectIdValidation } from "./userValidation";
 
 const objectIdValidation = (value, helpers) => {
   if (!isValidObjectId(value)) {
@@ -34,6 +35,9 @@ export const createStorySchema = Joi.object({
   }),
 });
 
+export const storyIdParamSchema = {
+  [Segments.PARAMS]: Joi.object({
+    storyId: Joi.string().custom(objectIdValidator).required(),
 export const getAllStoriesSchema = {
   [Segments.QUERY]: Joi.object({
     page: Joi.number().integer().min(1).default(1).messages({

@@ -4,6 +4,7 @@ import { Category } from "../models/category.js";
 import { Story } from "../models/story.js";
 import { createStory } from "../services/stories.js";
 import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
+import { addStoryToSaved, removeStoryFromSaved } from '../services/users.js';
 
 import mongoose from "mongoose";
 
@@ -102,6 +103,42 @@ export const getStoriesByUserId = async (req, res) => {
   });
 };
 
+export const addSavedStory = async (req, res) => {
+  const { storyId } = req.params;
+  const userId = req.user._id;
+  const storyExists = await Story.findById(storyId);
+  if (!storyExists) {
+    throw createHttpError(404, "Статтю не знайдено");
+  }
+
+  const updatedUser = await addStoryToSaved(userId, storyId);
+
+  res.status(200).json({
+    status: 200,
+    message: "Статтю успішно додано до збережених",
+    data: {
+      savedArticles: updatedUser.savedArticles,
+    },
+  });
+};
+
+export const removeSavedStory = async (req, res) => {
+  const { storyId } = req.params;
+  const userId = req.user._id;
+  const storyExists = await Story.findById(storyId);
+  if (!storyExists) {
+    throw createHttpError(404, "Статтю не знайдено");
+  }
+
+  const updatedUser = await removeStoryFromSaved(userId, storyId);
+
+  res.status(200).json({
+    status: 200,
+    message: "Статтю успішно видалено зі збережених",
+    data: {
+      savedArticles: updatedUser.savedArticles,
+    },
+  });
 export const getAllStories = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const perPage = Number(req.query.perPage) || 6;
