@@ -1,8 +1,9 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import pino from 'pino-http';
-import 'dotenv/config';
+
 import { logger } from './middleware/logger.js';
 
 import { connectMongoDB } from './db/connectMongoDB.js';

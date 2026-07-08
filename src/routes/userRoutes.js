@@ -14,12 +14,12 @@ const router = Router();
 
 // Отримати збережені історії поточного користувача
 router.get(
-  '/api/users/saved',
+  '/users/saved',
   authenticate,
   celebrate(getSavedStoriesSchema),
   getSavedStories,
 );
 
-router.get('/api/users/:userId', celebrate(getUserArticlesSchema), getUserById);
+router.get('/users/:userId', celebrate(getUserArticlesSchema), getUserById);
 
 export default router;

@@ -29,10 +29,10 @@ import { authenticate } from '../middleware/authenticate.js';
 
 const storyRouter = Router();
 
-storyRouter.get('/api/articles', celebrate(getArticlesSchema), getArticles);
+storyRouter.get('/articles', celebrate(getArticlesSchema), getArticles);
 storyRouter.get('/stories/:storyId', getStoryById);
 storyRouter.post(
-  '/api/stories',
+  '/stories',
   authenticate,
   upload.single('img'),
   celebrate({
@@ -41,13 +41,13 @@ storyRouter.post(
   createStoryController,
 );
 storyRouter.post(
-  '/api/stories/:storyId/saved',
+  '/stories/:storyId/saved',
   authenticate,
   celebrate(storyIdParamSchema),
   addSavedStory,
 );
 storyRouter.delete(
-  '/api/stories/:storyId/saved',
+  '/stories/:storyId/saved',
   authenticate,
   celebrate(storyIdParamSchema),
   removeSavedStory,
