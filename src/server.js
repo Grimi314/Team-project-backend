@@ -23,9 +23,9 @@ app.use(cookieParser());
 app.use(pino());
 app.use(logger);
 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/stories', storyRouter);
+app.use(authRoutes);
+app.use(userRoutes);
+app.use(storyRouter);
 
 app.use(celebrateErrors());
 app.use(notFoundHandler);
