@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 .vscode
 .DS_Store
 .idea
 
+=======
+>>>>>>> 85fab6f23b6f5d2adc7a8668559cbf28da14e53f
 # Logs
 logs
 *.log
@@ -85,6 +88,10 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+<<<<<<< HEAD
+=======
+.output
+>>>>>>> 85fab6f23b6f5d2adc7a8668559cbf28da14e53f
 
 # Gatsby files
 .cache/
@@ -95,9 +102,14 @@ dist
 # vuepress build output
 .vuepress/dist
 
+<<<<<<< HEAD
 # vuepress v2.x temp and cache directory
 .temp
 .cache
+=======
+# vuepress v2.x temp directory
+.temp
+>>>>>>> 85fab6f23b6f5d2adc7a8668559cbf28da14e53f
 
 # Sveltekit cache directory
 .svelte-kit/
@@ -129,6 +141,12 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+<<<<<<< HEAD
+=======
+# pnpm
+.pnpm-store
+
+>>>>>>> 85fab6f23b6f5d2adc7a8668559cbf28da14e53f
 # yarn v3
 .pnp.*
 .yarn/*
@@ -138,6 +156,14 @@ dist
 !.yarn/sdks
 !.yarn/versions
 
+<<<<<<< HEAD
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+=======
+# Vite files
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.vite/
+ 
+>>>>>>> 85fab6f23b6f5d2adc7a8668559cbf28da14e53f
