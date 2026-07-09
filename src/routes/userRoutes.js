@@ -5,9 +5,12 @@ import { authenticate } from '../middleware/authenticate.js';
 
 import { getUserById, getSavedStories } from '../controllers/userController.js';
 
+import { getStoriesByUserId } from '../controllers/storyController.js';
+
 import {
   getUserArticlesSchema,
   getSavedStoriesSchema,
+  getUserStoriesSchema
 } from '../validations/userValidation.js';
 
 const router = Router();
@@ -21,5 +24,7 @@ router.get(
 );
 
 router.get('/users/:userId', celebrate(getUserArticlesSchema), getUserById);
+
+router.get('/users/:userId/stories', celebrate(getUserStoriesSchema), getStoriesByUserId);
 
 export default router;
