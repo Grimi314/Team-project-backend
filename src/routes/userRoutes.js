@@ -11,6 +11,7 @@ import { getCurrentUserController } from '../controllers/userController.js';
 import {
   getUserArticlesSchema,
   getSavedStoriesSchema,
+  getUserStoriesSchema
 } from '../validations/userValidation.js';
 
 const router = Router();
