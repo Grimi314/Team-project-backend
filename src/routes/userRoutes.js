@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 import { authenticate } from '../middleware/authenticate.js';
 
 import { getUserById, getSavedStories } from '../controllers/userController.js';
+
+import { getCurrentUserController } from '../controllers/userController.js';
 
 import {
   getUserArticlesSchema,
@@ -21,5 +24,7 @@ router.get(
 );
 
 router.get('/users/:userId', celebrate(getUserArticlesSchema), getUserById);
+
+router.get('/users/me', authenticate, ctrlWrapper(getCurrentUserController));
 
 export default router;

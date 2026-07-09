@@ -6,7 +6,6 @@ import {
   loginUser,
   logoutUser,
   refreshUserSession,
-  getCurrentUserController,
 } from '../controllers/authController.js';
 
 import {
@@ -27,6 +26,5 @@ router.post(
 router.post('/auth/login', celebrate(loginUserSchema), ctrlWrapper(loginUser));
 router.post('/auth/logout', authenticate, ctrlWrapper(logoutUser));
 router.post('/auth/refresh', ctrlWrapper(refreshUserSession));
-router.get('/users/me', authenticate, ctrlWrapper(getCurrentUserController));
 
 export default router;
