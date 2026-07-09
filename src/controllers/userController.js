@@ -1,6 +1,7 @@
 import createHttpError from "http-errors";
 import { User } from "../models/user.js";
 import { Story } from "../models/story.js";
+import { updateUserProfile } from "../services/users.js";
 
 export const getUserById = async (req, res) => {
   const { userId } = req.params;
@@ -68,5 +69,50 @@ export const getSavedStories = async (req, res) => {
     totalItems,
     totalPages,
     stories,
+  });
+};
+
+ // ADDED (BE-13 Tory): Приватний endpoint для оновлення профілю користувача
+export const updateUserProfileController = async (req, res) => {
+  const updatedUser = await updateUserProfile(
+    req.user._id,
+    req.body,
+  );
+
+  if (!updatedUser) {
+    throw createHttpError(404, "Користувача не знайдено");
+  }
+
+  res.status(200).json({
+    status: 200,
+    message: "Профіль успішно оновлено",
+    data: updatedUser,
+  });
+};
+
+// ADDED (BE-13 Tory): Підтвердження зміни email
+export const verifyEmailChangeController = async (req, res) => {
+  const { token } = req.params;
+
+  const user = await User.findOne({
+    emailVerificationToken: token,
+    emailVerificationTokenExpires: { $gt: new Date() },
+  });
+
+  if (!user) {
+    throw createHttpError(400, "Токен підтвердження недійсний або прострочений");
+  }
+
+  user.email = user.pendingEmail;
+  user.pendingEmail = null;
+  user.emailVerificationToken = null;
+  user.emailVerificationTokenExpires = null;
+
+  await user.save();
+
+  res.status(200).json({
+    status: 200,
+    message: "Email успішно підтверджено",
+    data: user,
   });
 };

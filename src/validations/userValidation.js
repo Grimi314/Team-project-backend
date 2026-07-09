@@ -51,3 +51,19 @@ export const getUserStoriesSchema = {
     perPage: Joi.number().integer().min(1).max(20),
   }),
 };
+
+export const updateUserProfileSchema = {
+  [Segments.BODY]: Joi.object({
+    name: Joi.string().min(3).max(32).messages({
+      "string.base": "Ім'я повинне бути рядком",
+      "string.min": "Ім'я повинне бути не менше {#limit} символів",
+      "string.max": "Ім'я повинне бути не більше {#limit} символів",
+    }),
+
+    avatar: Joi.string().uri().allow(null, ""),
+
+    email: Joi.string().email().messages({
+      "string.email": "Некоректний формат email",
+    }),
+  }).min(1),
+};
