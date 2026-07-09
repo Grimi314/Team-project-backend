@@ -72,30 +72,31 @@ export const getStoryById = async (req, res) => {
 
 export const getStoriesByUserId = async (req, res) => {
   const { userId } = req.params;
-  const { page = 1, perPage = 6 } = req.query;
+  const page = Number(req.query.page) || 1;
+  const perPage = Number(req.query.perPage) || 6;
 
   if (!userId) {
     throw createHttpError(400, 'User id is required');
   }
 
-  const skip = (Number(page) - 1) * Number(perPage);
+  const skip = (page - 1) * perPage;
 
   const filter = { ownerId: userId };
 
   const [totalItems, articles] = await Promise.all([
     Story.countDocuments(filter),
     Story.find(filter)
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: 1 })
       .skip(skip)
-      .limit(Number(perPage))
+      .limit(perPage)
       .populate('ownerId', 'name avatarUrl'),
   ]);
 
-  const totalPages = Math.ceil(totalItems / Number(perPage));
+  const totalPages = Math.ceil(totalItems / perPage);
 
   res.status(200).json({
-    page: Number(page),
-    perPage: Number(perPage),
+    page,
+    perPage,
     totalItems,
     totalPages,
     articles,
