@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
+import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 import { authenticate } from '../middleware/authenticate.js';
 
 import { getUserById, getSavedStories } from '../controllers/userController.js';
 
-import { getStoriesByUserId } from '../controllers/storyController.js';
+import { getCurrentUserController } from '../controllers/userController.js';
 
 import { getTravellers } from '../controllers/travellerController.js';
 
@@ -36,5 +37,6 @@ router.get(
 
 //Отримуємо список всіх мандрівників
 router.get('/travellers', celebrate(paginationTravellers), getTravellers);
+router.get('/users/me', authenticate, ctrlWrapper(getCurrentUserController));
 
 export default router;
