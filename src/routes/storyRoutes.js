@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { celebrate, Segments } from 'celebrate';
 
-import { getRecommendedStoriesController } from '../controllers/recommendedStoriesController.js';
-
 import {
   getArticlesSchema,
   storyIdParamSchema,
@@ -22,6 +20,8 @@ import { createStoryController } from '../controllers/storyController.js';
 import {
   addSavedStory,
   removeSavedStory,
+  getAllCategories,
+  getRecommendedStoriesController,
 } from '../controllers/storyController.js';
 
 import { upload } from '../middleware/multer.js';
@@ -56,5 +56,6 @@ storyRouter.delete(
 storyRouter.get('/recommended', getRecommendedStoriesController);
 
 storyRouter.get('/popular', celebrate(popularStoriesSchema), getPopularStories);
+storyRouter.get('/categories', getAllCategories);
 
 export default storyRouter;
