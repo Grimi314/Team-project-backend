@@ -9,6 +9,7 @@ import { logger } from './middleware/logger.js';
 import { connectMongoDB } from './db/connectMongoDB.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+
 import storyRouter from './routes/storyRoutes.js';
 
 import { notFoundHandler } from './middleware/notFoundHandler.js';
@@ -26,6 +27,7 @@ app.use(logger);
 
 app.use(authRoutes);
 app.use(userRoutes);
+
 app.use(storyRouter);
 
 app.use(celebrateErrors());

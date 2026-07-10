@@ -8,13 +8,11 @@ import {
 
 import {
   createStorySchema,
-  getAllStoriesSchema,
   popularStoriesSchema,
 } from '../validations/storyValidation.js';
 
 import {
   getArticles,
-  getAllStories,
   getPopularStories,
 } from '../controllers/storyController.js';
 import { getStoryById } from '../controllers/storyController.js';
@@ -22,6 +20,8 @@ import { createStoryController } from '../controllers/storyController.js';
 import {
   addSavedStory,
   removeSavedStory,
+  getAllCategories,
+  getRecommendedStoriesController,
 } from '../controllers/storyController.js';
 
 import { upload } from '../middleware/multer.js';
@@ -52,7 +52,10 @@ storyRouter.delete(
   celebrate(storyIdParamSchema),
   removeSavedStory,
 );
-storyRouter.get('/', celebrate(getAllStoriesSchema), getAllStories);
+
+storyRouter.get('/recommended', getRecommendedStoriesController);
+
 storyRouter.get('/popular', celebrate(popularStoriesSchema), getPopularStories);
+storyRouter.get('/categories', getAllCategories);
 
 export default storyRouter;

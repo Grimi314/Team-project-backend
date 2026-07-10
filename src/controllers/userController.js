@@ -11,14 +11,14 @@ export const getUserById = async (req, res) => {
 
   const user = await User.findById(userId);
   if (!user) {
-    throw createHttpError(404, "Такий користувач відсутній");
+    throw createHttpError(404, 'Такий користувач відсутній');
   }
 
   const [totalItems, articles] = await Promise.all([
     Story.countDocuments({ ownerId: userId }),
     Story.find({ ownerId: userId })
-      .select("img title ownerId")
-      .populate("ownerId", "name savedArticles")
+      .select('img title ownerId')
+      .populate('ownerId', 'name savedArticles')
       .skip(skip)
       .limit(perPage),
   ]);
@@ -50,10 +50,10 @@ export const getSavedStories = async (req, res) => {
   // 2. Чи ref у User = "Story" замість "Article".
   // 3. Чи populate("savedArticles") працює.
 
-  const user = await User.findById(req.user._id).populate("savedArticles");
+  const user = await User.findById(req.user._id).populate('savedArticles');
 
   if (!user) {
-    throw createHttpError(404, "Користувача не знайдено");
+    throw createHttpError(404, 'Користувача не знайдено');
   }
 
   const savedStories = user.savedArticles;
@@ -115,4 +115,9 @@ export const verifyEmailChangeController = async (req, res) => {
     message: "Email успішно підтверджено",
     data: user,
   });
+};
+export const getCurrentUserController = async (req, res) => {
+  const user = req.user;
+
+  res.status(200).json(user);
 };

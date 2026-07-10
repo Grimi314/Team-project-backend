@@ -4,6 +4,9 @@ import { Story } from '../models/story.js';
 import { createStory } from '../services/stories.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { addStoryToSaved, removeStoryFromSaved } from '../services/users.js';
+import { Category } from '../models/category.js';
+
+import { getRecommendedStories } from '../services/stories.js';
 
 import mongoose from 'mongoose';
 
@@ -197,4 +200,15 @@ export const getPopularStories = async (req, res) => {
   }
 
   res.status(200).json(popularStories);
+};
+
+export const getAllCategories = async (req, res) => {
+  const categories = await Category.find({}).sort({ category: 1 });
+  return res.status(200).json(categories);
+};
+
+export const getRecommendedStoriesController = async (req, res) => {
+  const result = await getRecommendedStories(req.query);
+
+  res.status(200).json(result);
 };

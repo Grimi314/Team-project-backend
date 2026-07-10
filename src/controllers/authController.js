@@ -108,8 +108,4 @@ export const refreshUserSession = async (req, res) => {
   });
 };
 
-export const getCurrentUserController = async (req, res) => {
-  const user = req.user;
 
-  res.status(200).json(user);
-};
