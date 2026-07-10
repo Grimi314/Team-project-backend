@@ -18,6 +18,21 @@ const userSchema = new Schema(
       lowercase: true,
       maxlength: 64,
     },
+    pendingEmail: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      default: null,
+    },
+
+    emailVerificationToken: {
+      type: String,
+      default: null,
+    },
+    emailVerificationTokenExpires: {
+      type: Date,
+      default: null,
+    },
     password: {
       type: String,
       required: true,

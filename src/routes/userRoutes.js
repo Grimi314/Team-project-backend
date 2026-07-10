@@ -4,7 +4,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 import { authenticate } from '../middleware/authenticate.js';
 
-import { getUserById, getSavedStories } from '../controllers/userController.js';
+import { getUserById, getSavedStories, updateUserProfileController, verifyEmailChangeController, } from '../controllers/userController.js';
 
 import { getCurrentUserController } from '../controllers/userController.js';
 
@@ -14,6 +14,7 @@ import {
   getUserArticlesSchema,
   getSavedStoriesSchema,
   getUserStoriesSchema,
+  updateUserProfileSchema
   paginationTravellers,
 } from '../validations/userValidation.js';
 
@@ -25,6 +26,19 @@ router.get(
   authenticate,
   celebrate(getSavedStoriesSchema),
   getSavedStories,
+);
+
+// Оновлення профілю поточного користувача
+router.patch(
+  '/users/profile',
+  authenticate,
+  celebrate(updateUserProfileSchema),
+  updateUserProfileController,
+);
+
+router.get(
+  '/users/verify-email/:token',
+  verifyEmailChangeController,
 );
 
 router.get('/users/:userId', celebrate(getUserArticlesSchema), getUserById);
