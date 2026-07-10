@@ -7,10 +7,13 @@ import { getUserById, getSavedStories } from '../controllers/userController.js';
 
 import { getStoriesByUserId } from '../controllers/storyController.js';
 
+import { getTravellers } from '../controllers/travellerController.js';
+
 import {
   getUserArticlesSchema,
   getSavedStoriesSchema,
-  getUserStoriesSchema
+  getUserStoriesSchema,
+  paginationTravellers,
 } from '../validations/userValidation.js';
 
 const router = Router();
@@ -25,6 +28,13 @@ router.get(
 
 router.get('/users/:userId', celebrate(getUserArticlesSchema), getUserById);
 
-router.get('/users/:userId/stories', celebrate(getUserStoriesSchema), getStoriesByUserId);
+router.get(
+  '/users/:userId/stories',
+  celebrate(getUserStoriesSchema),
+  getStoriesByUserId,
+);
+
+//Отримуємо список всіх мандрівників
+router.get('/travellers', celebrate(paginationTravellers), getTravellers);
 
 export default router;
