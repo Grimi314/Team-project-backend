@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { celebrate, Segments } from 'celebrate';
 
+import { getRecommendedStoriesController } from '../controllers/recommendedStoriesController.js';
+
 import {
   getArticlesSchema,
   storyIdParamSchema,
@@ -8,13 +10,11 @@ import {
 
 import {
   createStorySchema,
-  getAllStoriesSchema,
   popularStoriesSchema,
 } from '../validations/storyValidation.js';
 
 import {
   getArticles,
-  getAllStories,
   getPopularStories,
 } from '../controllers/storyController.js';
 import { getStoryById } from '../controllers/storyController.js';
@@ -52,7 +52,9 @@ storyRouter.delete(
   celebrate(storyIdParamSchema),
   removeSavedStory,
 );
-storyRouter.get('/', celebrate(getAllStoriesSchema), getAllStories);
+
+storyRouter.get('/recommended', getRecommendedStoriesController);
+
 storyRouter.get('/popular', celebrate(popularStoriesSchema), getPopularStories);
 
 export default storyRouter;
