@@ -3,8 +3,14 @@ import { celebrate } from 'celebrate';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
 import { authenticate } from '../middleware/authenticate.js';
+import { getStoriesByUserId } from '../controllers/storyController.js';
 
-import { getUserById, getSavedStories, updateUserProfileController, verifyEmailChangeController, } from '../controllers/userController.js';
+import {
+  getUserById,
+  getSavedStories,
+  updateUserProfileController,
+  verifyEmailChangeController,
+} from '../controllers/userController.js';
 
 import { getCurrentUserController } from '../controllers/userController.js';
 
@@ -14,7 +20,7 @@ import {
   getUserArticlesSchema,
   getSavedStoriesSchema,
   getUserStoriesSchema,
-  updateUserProfileSchema
+  updateUserProfileSchema,
   paginationTravellers,
 } from '../validations/userValidation.js';
 
@@ -36,10 +42,7 @@ router.patch(
   updateUserProfileController,
 );
 
-router.get(
-  '/users/verify-email/:token',
-  verifyEmailChangeController,
-);
+router.get('/users/verify-email/:token', verifyEmailChangeController);
 
 router.get('/users/:userId', celebrate(getUserArticlesSchema), getUserById);
 
