@@ -42,6 +42,11 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    articlesAmount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     savedArticles: [
       {
         type: Schema.Types.ObjectId,
