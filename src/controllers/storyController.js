@@ -1,10 +1,11 @@
 import createHttpError from 'http-errors';
+import { User } from '../models/user.js';
 
+import { Category } from '../models/category.js';
 import { Story } from '../models/story.js';
 import { createStory } from '../services/stories.js';
-import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 import { addStoryToSaved, removeStoryFromSaved } from '../services/users.js';
-import { Category } from '../models/category.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 import { getRecommendedStories } from '../services/stories.js';
 
@@ -31,6 +32,10 @@ export const createStoryController = async (req, res, next) => {
       category,
       ownerId,
       date,
+    });
+
+    await User.findByIdAndUpdate(ownerId, {
+      $inc: { articlesAmount: 1 },
     });
 
     res.status(201).json({
