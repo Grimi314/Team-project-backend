@@ -7,11 +7,13 @@ import {
 } from '../validations/storyValidation.js';
 
 import {
+  getAllStoriesSchema,
   createStorySchema,
   popularStoriesSchema,
 } from '../validations/storyValidation.js';
 
 import {
+  getAllStories,
   getArticles,
   getPopularStories,
 } from '../controllers/storyController.js';
@@ -30,6 +32,11 @@ import { authenticate } from '../middleware/authenticate.js';
 const storyRouter = Router();
 
 storyRouter.get('/articles', celebrate(getArticlesSchema), getArticles);
+storyRouter.get('/recommended', getRecommendedStoriesController);
+storyRouter.get('/popular', celebrate(popularStoriesSchema), getPopularStories);
+storyRouter.get('/categories', getAllCategories);
+storyRouter.get('/', celebrate(getAllStoriesSchema), getAllStories);
+
 storyRouter.get('/stories/:storyId', getStoryById);
 storyRouter.post(
   '/stories',
@@ -52,10 +59,5 @@ storyRouter.delete(
   celebrate(storyIdParamSchema),
   removeSavedStory,
 );
-
-storyRouter.get('/recommended', getRecommendedStoriesController);
-
-storyRouter.get('/popular', celebrate(popularStoriesSchema), getPopularStories);
-storyRouter.get('/categories', getAllCategories);
 
 export default storyRouter;
