@@ -1,9 +1,8 @@
+import mongoose from 'mongoose';
+import createHttpError from 'http-errors';
 
-import mongoose from "mongoose";
-import createHttpError from "http-errors";
-
-import { Story } from "../models/story.js";
-import "../models/user.js";
+import { Story } from '../models/story.js';
+import '../models/user.js';
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_PER_PAGE = 3;
@@ -14,7 +13,7 @@ const getStringQueryParam = (value) => {
     return value[0];
   }
 
-  if (typeof value !== "string") {
+  if (typeof value !== 'string') {
     return undefined;
   }
 
@@ -51,12 +50,13 @@ export const createStory = async (payload) => {
 export const getRecommendedStories = async (query) => {
   const category = getStringQueryParam(query.category)?.trim();
 
-  if (!category) {
-    throw createHttpError(400, "Category query parameter is required");
-  }
+  // if (!category) {
+  //   throw createHttpError(400, 'Category query parameter is required');
+  // }
 
-  if (!mongoose.isValidObjectId(category)) {
-    throw createHttpError(400, "Category must be a valid id");
+  // if (!mongoose.isValidObjectId(category)) {
+  if (category && !mongoose.isValidObjectId(category)) {
+    throw createHttpError(400, 'Category must be a valid id');
   }
 
   const page = normalizePositiveInteger(
@@ -69,14 +69,18 @@ export const getRecommendedStories = async (query) => {
   );
   const perPage = Math.min(requestedPerPage, MAX_PER_PAGE);
   const skip = (page - 1) * perPage;
-  const filter = { category };
+  // const filter = { category };
+  const filter = {};
+  if (category) {
+    filter.category = category;
+  }
 
   const [stories, totalItems] = await Promise.all([
     Story.find(filter)
       .sort({ rate: -1, date: -1 })
       .skip(skip)
       .limit(perPage)
-      .populate("ownerId", "name avatarUrl")
+      .populate('ownerId', 'name avatarUrl')
       .lean(),
     Story.countDocuments(filter),
   ]);
@@ -105,4 +109,3 @@ export const getRecommendedStories = async (query) => {
     ...buildPagination({ page, perPage, totalItems }),
   };
 };
-

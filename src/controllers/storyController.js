@@ -13,16 +13,34 @@ import mongoose from 'mongoose';
 
 export const createStoryController = async (req, res, next) => {
   try {
+    if (!req.body) {
+      throw createHttpError(
+        400,
+        'Тіло запиту (Request Body) порожнє або некоректне.',
+      );
+    }
     const { title, article, category } = req.body;
+    if (!title || !article || !category) {
+      throw createHttpError(
+        400,
+        "Поля title, article та category є обов'язковими.",
+      );
+    }
     if (!req.file) {
       throw createHttpError(400, "Зображення є обов'язковим.");
     }
-    const cloudinaryResult = await saveFileToCloudinary(req.file.buffer);
-    const img = cloudinaryResult.secure_url;
+
     const ownerId = req.user?._id;
     if (!ownerId) {
       throw createHttpError(401, 'Користувач не авторизований.');
     }
+
+    const cloudinaryResult = await saveFileToCloudinary(req.file.buffer);
+    const img = cloudinaryResult.secure_url;
+    // const ownerId = req.user?._id;
+    // if (!ownerId) {
+    //   throw createHttpError(401, 'Користувач не авторизований.');
+    // }
     const date = new Date().toISOString().split('T')[0];
 
     const story = await createStory({
@@ -74,12 +92,10 @@ export const getStoryById = async (req, res) => {
     throw createHttpError(400, 'Некоректний ID статті');
   }
 
- 
-  const story = await mongoose.connection
-    .collection('stories')
-    .findOne({
-      _id: new mongoose.Types.ObjectId(storyId),
-    });
+  // const story = await mongoose.connection.collection('articles').findOne({
+  //   _id: new mongoose.Types.ObjectId(storyId),
+  // });
+  const story = await Story.findById(storyId);
 
   if (!story) {
     throw createHttpError(404, 'Статтю не знайдено');
