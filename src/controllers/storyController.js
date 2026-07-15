@@ -85,6 +85,8 @@ export const getArticles = async (req, res) => {
   });
 };
 
+
+
 export const getStoryById = async (req, res) => {
   const { storyId } = req.params;
 
@@ -92,10 +94,9 @@ export const getStoryById = async (req, res) => {
     throw createHttpError(400, 'Некоректний ID статті');
   }
 
-  // const story = await mongoose.connection.collection('articles').findOne({
-  //   _id: new mongoose.Types.ObjectId(storyId),
-  // });
-  const story = await Story.findById(storyId);
+  const story = await Story.findById(storyId)
+    .populate('ownerId', 'name avatarUrl')
+    .populate('category');
 
   if (!story) {
     throw createHttpError(404, 'Статтю не знайдено');
@@ -129,6 +130,8 @@ export const getStoriesByUserId = async (req, res) => {
   ]);
 
   const totalPages = Math.ceil(totalItems / perPage);
+
+
 
   res.status(200).json({
     page,
