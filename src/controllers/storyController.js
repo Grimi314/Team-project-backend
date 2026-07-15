@@ -67,28 +67,7 @@ export const getArticles = async (req, res) => {
   });
 };
 
-export const getStoryById = async (req, res) => {
-  const { storyId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(storyId)) {
-    throw createHttpError(400, 'Некоректний ID статті');
-  }
-
- 
-  const story = await mongoose.connection
-    .collection('stories')
-    .findOne({
-      _id: new mongoose.Types.ObjectId(storyId),
-    });
-
-  if (!story) {
-    throw createHttpError(404, 'Статтю не знайдено');
-  }
-
-  res.status(200).json({
-    story,
-  });
-};
 
 export const getStoryById = async (req, res) => {
   const { storyId } = req.params;
