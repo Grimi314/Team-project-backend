@@ -89,6 +89,41 @@ export const getStoryById = async (req, res) => {
   });
 };
 
+export const getStoriesByUserId = async (req, res) => {
+  const { userId } = req.params;
+  const page = Number(req.query.page) || 1;
+  const perPage = Number(req.query.perPage) || 6;
+
+  if (!userId) {
+    throw createHttpError(400, 'User id is required');
+  }
+
+  const skip = (page - 1) * perPage;
+
+  const filter = { ownerId: userId };
+
+  const [totalItems, articles] = await Promise.all([
+    Story.countDocuments(filter),
+    Story.find(filter)
+      .sort({ createdAt: -1, _id: 1 })
+      .skip(skip)
+      .limit(perPage)
+      .populate('ownerId', 'name avatarUrl'),
+  ]);
+
+  const totalPages = Math.ceil(totalItems / perPage);
+
+
+
+  res.status(200).json({
+    page,
+    perPage,
+    totalItems,
+    totalPages,
+    articles,
+  });
+};
+
 export const addSavedStory = async (req, res) => {
   const { storyId } = req.params;
   const userId = req.user._id;
