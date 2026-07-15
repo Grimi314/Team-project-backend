@@ -2,6 +2,9 @@ import { Joi, Segments } from 'celebrate';
 import { isValidObjectId } from 'mongoose';
 
 const objectIdValidation = (value, helpers) => {
+  if (!value) {
+    return value;
+  }
   if (!isValidObjectId(value)) {
     return helpers.message('Некоректна категорія.');
   }

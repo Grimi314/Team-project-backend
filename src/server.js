@@ -3,6 +3,11 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import pino from 'pino-http';
+import fs from 'fs';
+import path from 'path';
+
+// Імпортуємо модуль відображення Swagger
+import swaggerUi from 'swagger-ui-express';
 
 import { logger } from './middleware/logger.js';
 
@@ -24,6 +29,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(pino());
 app.use(logger);
+
+const swaggerPath = path.resolve('src/swagger.json');
+const completeSwaggerSpec = JSON.parse(fs.readFileSync(swaggerPath, 'utf8'));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(completeSwaggerSpec));
 
 app.use(authRoutes);
 app.use(userRoutes);
