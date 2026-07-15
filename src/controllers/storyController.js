@@ -90,36 +90,23 @@ export const getStoryById = async (req, res) => {
   });
 };
 
-export const getStoriesByUserId = async (req, res) => {
-  const { userId } = req.params;
-  const page = Number(req.query.page) || 1;
-  const perPage = Number(req.query.perPage) || 6;
+export const getStoryById = async (req, res) => {
+  const { storyId } = req.params;
 
-  if (!userId) {
-    throw createHttpError(400, 'User id is required');
+  if (!mongoose.Types.ObjectId.isValid(storyId)) {
+    throw createHttpError(400, 'Некоректний ID статті');
   }
 
-  const skip = (page - 1) * perPage;
+  const story = await Story.findById(storyId)
+    .populate('ownerId', 'name avatarUrl')
+    .populate('category');
 
-  const filter = { ownerId: userId };
-
-  const [totalItems, articles] = await Promise.all([
-    Story.countDocuments(filter),
-    Story.find(filter)
-      .sort({ createdAt: -1, _id: 1 })
-      .skip(skip)
-      .limit(perPage)
-      .populate('ownerId', 'name avatarUrl'),
-  ]);
-
-  const totalPages = Math.ceil(totalItems / perPage);
+  if (!story) {
+    throw createHttpError(404, 'Статтю не знайдено');
+  }
 
   res.status(200).json({
-    page,
-    perPage,
-    totalItems,
-    totalPages,
-    articles,
+    story,
   });
 };
 
