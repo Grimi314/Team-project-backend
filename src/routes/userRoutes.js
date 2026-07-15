@@ -26,6 +26,8 @@ import {
 
 const router = Router();
 
+router.get('/users/me', authenticate, ctrlWrapper(getCurrentUserController));
+
 // Отримати збережені історії поточного користувача
 router.get(
   '/users/saved',
@@ -42,6 +44,9 @@ router.patch(
   updateUserProfileController,
 );
 
+//Отримуємо список всіх мандрівників
+router.get('/travellers', celebrate(paginationTravellers), getTravellers);
+
 router.get('/users/verify-email/:token', verifyEmailChangeController);
 
 router.get('/users/:userId', celebrate(getUserArticlesSchema), getUserById);
@@ -51,9 +56,5 @@ router.get(
   celebrate(getUserStoriesSchema),
   getStoriesByUserId,
 );
-
-//Отримуємо список всіх мандрівників
-router.get('/travellers', celebrate(paginationTravellers), getTravellers);
-router.get('/users/me', authenticate, ctrlWrapper(getCurrentUserController));
 
 export default router;
