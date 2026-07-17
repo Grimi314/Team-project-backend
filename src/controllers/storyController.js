@@ -3,7 +3,7 @@ import { User } from '../models/user.js';
 
 import { Category } from '../models/category.js';
 import { Story } from '../models/story.js';
-import { createStory } from '../services/stories.js';
+import { createStory, incrementStoryRate, decrementStoryRate } from '../services/stories.js';
 import { addStoryToSaved, removeStoryFromSaved } from '../services/users.js';
 import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
@@ -152,6 +152,8 @@ export const addSavedStory = async (req, res) => {
 
   const updatedUser = await addStoryToSaved(userId, storyId);
 
+  await incrementStoryRate(storyId);
+
   res.status(200).json({
     status: 200,
     message: 'Статтю успішно додано до збережених',
@@ -171,6 +173,8 @@ export const removeSavedStory = async (req, res) => {
 
   const updatedUser = await removeStoryFromSaved(userId, storyId);
 
+  await decrementStoryRate(storyId);
+
   res.status(200).json({
     status: 200,
     message: 'Статтю успішно видалено зі збережених',
@@ -179,6 +183,7 @@ export const removeSavedStory = async (req, res) => {
     },
   });
 };
+
 export const getAllStories = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const perPage = Number(req.query.perPage) || 6;
