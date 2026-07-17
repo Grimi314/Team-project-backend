@@ -109,3 +109,17 @@ export const getRecommendedStories = async (query) => {
     ...buildPagination({ page, perPage, totalItems }),
   };
 };
+
+export const incrementStoryRate = async (storyId) => {
+  return await Story.updateOne(
+    { _id: storyId },
+    { $inc: { rate: 1 } }
+  );
+};
+
+export const decrementStoryRate = async (storyId) => {
+  return await Story.updateOne(
+    { _id: storyId },
+    { $inc: { rate: -1 } }
+  );
+};
